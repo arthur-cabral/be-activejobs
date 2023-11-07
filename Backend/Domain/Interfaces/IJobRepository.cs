@@ -11,5 +11,7 @@ namespace Domain.Interfaces
     public interface IJobRepository : IRepository<Job>
     {
         Task<PagedList<Job>> GetAll(PaginationParameters paginationParameters);
+        Task<PagedList<Job>> GetAllActive(PaginationParameters paginationParameters);
+        Task<Job> GetById(long id);
     }
 }

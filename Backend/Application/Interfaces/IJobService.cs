@@ -12,5 +12,7 @@ namespace Application.Interfaces
     public interface IJobService
     {
         Task<PagedList<JobDTO>> GetAll(PaginationParametersDTO paginationParametersDTO);
+        Task<PagedList<JobDTO>> GetAllActive(PaginationParametersDTO paginationParametersDTO);
+        Task<JobDTO> GetById(long id);
     }
 }

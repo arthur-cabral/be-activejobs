@@ -29,5 +29,18 @@ namespace Application.Services
             var jobEntity = await _jobRepository.GetAll(paginationParametersEntity);
             return _mapper.Map<PagedList<JobDTO>>(jobEntity);
         }
+
+        public async Task<PagedList<JobDTO>> GetAllActive(PaginationParametersDTO paginationParametersDTO)
+        {
+            var paginationParametersEntity = _mapper.Map<PaginationParameters>(paginationParametersDTO);
+            var jobEntity = await _jobRepository.GetAllActive(paginationParametersEntity);
+            return _mapper.Map<PagedList<JobDTO>>(jobEntity);
+        }
+
+        public async Task<JobDTO> GetById(long id)
+        {
+            var jobEntity = await _jobRepository.GetById(id);
+            return _mapper.Map<JobDTO>(jobEntity);
+        }
     }
 }

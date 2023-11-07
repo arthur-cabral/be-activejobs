@@ -20,5 +20,6 @@ namespace Domain.Entities
         public string Status { get; set; }
         public string Company { get; set; }
         public string Seniority { get; set; }
+        public bool Active { get; set; }
     }
 }

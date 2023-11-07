@@ -19,8 +19,29 @@ namespace Infrastructure.Repositories
 
         public async Task<PagedList<Job>> GetAll(PaginationParameters paginationParameters)
         {
-            return PagedList<Job>.ToPagedList(Get().OrderBy(on => on.Title),
+            return PagedList<Job>.ToPagedList(Get().OrderByDescending(on => on.DateCreated),
                 paginationParameters.PageNumber, paginationParameters.PageSize);
+        }
+
+        public async Task<PagedList<Job>> GetAllActive(PaginationParameters paginationParameters)
+        {
+            return PagedList<Job>.ToPagedList(Get().Where(j => j.Active == true).OrderByDescending(on => on.DateCreated),
+                paginationParameters.PageNumber, paginationParameters.PageSize);
+        }
+
+        public async Task<Job> GetById(long id)
+        {
+            return await GetByProperty(j => j.Id == id);
+        }
+
+        public async Task<bool> ExistsById(long id)
+        {
+            var exists = Get().Where(j => j.Id == id);
+            if (exists.First() != null)
+            {
+                return true;
+            } 
+            return false;
         }
     }
 }

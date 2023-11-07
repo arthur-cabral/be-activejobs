@@ -16,5 +16,6 @@ namespace Application.DTO.Job
         public string Status { get; set; }
         public string Company { get; set; }
         public string Seniority { get; set; }
+        public bool Active { get; set; }
     }
 }
