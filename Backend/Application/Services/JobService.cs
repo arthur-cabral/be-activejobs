@@ -1,7 +1,9 @@
 ﻿using Application.DTO.Job;
 using Application.DTO.Pagination;
+using Application.DTO.Response;
 using Application.Interfaces;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Pagination;
 using System;
@@ -39,8 +41,66 @@ namespace Application.Services
 
         public async Task<JobDTO> GetById(long id)
         {
-            var jobEntity = await _jobRepository.GetById(id);
-            return _mapper.Map<JobDTO>(jobEntity);
+            try
+            {
+                if (await _jobRepository.ExistsById(id))
+                {
+                    var jobEntity = await _jobRepository.GetById(id);
+                    return _mapper.Map<JobDTO>(jobEntity);
+                }
+                return null;
+            } catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<MessageResponseDTO> CreateJob(JobDTO jobDTO)
+        {
+            try
+            {
+                jobDTO.Active = true;
+                var jobEntity = _mapper.Map<Job>(jobDTO);
+                await _jobRepository.CreateJob(jobEntity);
+
+                return new MessageResponseDTO(true, "Vaga criada com sucesso");
+            } catch (Exception ex)
+            {
+                return new MessageResponseDTO(false, ex.Message);
+            }
+        }
+
+        public async Task<MessageResponseDTO> UpdateJob(JobDTO jobDTO)
+        {
+            bool existsJob = await _jobRepository.ExistsById(jobDTO.Id);
+            if (!existsJob)
+            {
+                return new MessageResponseDTO(false, "Vaga não encontrada");
+            }
+            try
+            {
+                var jobEntity = _mapper.Map<Job>(jobDTO);
+                jobEntity.Id = jobDTO.Id;
+                await _jobRepository.UpdateJob(jobEntity);
+
+                return new MessageResponseDTO(true, "Vaga criada com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return new MessageResponseDTO(false, ex.Message);
+            }
+        }
+
+        public async Task<MessageResponseDTO> DeleteJob(long id)
+        {
+            bool existsJob = await _jobRepository.ExistsById(id);
+            if (!existsJob)
+            {
+                return new MessageResponseDTO(false, "Vaga não encontrada");
+            }
+
+            await _jobRepository.DeleteJob(id);
+            return new MessageResponseDTO(true, "Vaga deletada com sucesso");
         }
     }
 }

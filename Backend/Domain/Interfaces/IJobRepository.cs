@@ -13,5 +13,9 @@ namespace Domain.Interfaces
         Task<PagedList<Job>> GetAll(PaginationParameters paginationParameters);
         Task<PagedList<Job>> GetAllActive(PaginationParameters paginationParameters);
         Task<Job> GetById(long id);
+        Task<bool> ExistsById(long id);
+        Task CreateJob(Job job);
+        Task UpdateJob(Job job);
+        Task DeleteJob(long id);
     }
 }

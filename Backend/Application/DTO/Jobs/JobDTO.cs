@@ -8,7 +8,7 @@ namespace Application.DTO.Job
 {
     public class JobDTO
     {
-        public long IdJob { get; set; }
+        public long Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime DateCreated { get; set; }

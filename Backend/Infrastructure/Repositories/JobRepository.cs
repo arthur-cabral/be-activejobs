@@ -36,12 +36,27 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> ExistsById(long id)
         {
-            var exists = Get().Where(j => j.Id == id);
-            if (exists.First() != null)
-            {
-                return true;
-            } 
-            return false;
+            Job job = await GetByProperty(j => j.Id == id);
+            return job != null;
+        }
+
+        public async Task CreateJob(Job job)
+        {
+            Add(job);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateJob(Job job)
+        {
+            Update(job);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteJob(long id)
+        {
+            Job job = await GetByProperty(j => j.Id == id);
+            Delete(job);
+            await _context.SaveChangesAsync();
         }
     }
 }
